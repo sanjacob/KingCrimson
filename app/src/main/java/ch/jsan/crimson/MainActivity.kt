@@ -1,9 +1,17 @@
 package ch.jsan.crimson
 
+import android.Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
+import android.content.Intent
+import android.media.AudioManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,14 +35,12 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun Greeting(name: String) {
+        Text(text = "Hello, $name!")
 }
 
 @Preview(showBackground = true)

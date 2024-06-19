@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KingCrimson"
         tools:targetApi="31">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -23,6 +24,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".SkipService"
+            android:label="@string/service_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+            <!--<meta-data
+                android:name="android.service.notification.default_filter_types"
+                android:value="ongoing|silent|conversations|alerting">
+            </meta-data>
+            <meta-data
+                android:name="android.service.notification.disabled_filter_types"
+                android:value="conversations|alerting">
+            </meta-data>-->
+        </service>
     </application>
 
+    <queries>
+        <intent>
+            <action android:name="androidx.media3.session.MediaSessionService" />
+        </intent>
+    </queries>
 </manifest>
