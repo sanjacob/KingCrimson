@@ -1,6 +1,7 @@
 package ch.jsan.crimson
 
 import android.app.Notification
+import android.media.MediaMetadata as MediaMetadata1
 import android.os.Build
 import android.os.Bundle
 
@@ -46,14 +47,23 @@ class SkipService : NotificationListenerService() {
 
             controllerFuture.addListener({
                 val controller = controllerFuture.get()
-                controller.seekToNext()
+
+                if (controller.isPlayingAd) {
+                    println("PLAYING AD")
+                } else {
+                    println("NOT PLAYING AD")
+                }
+
+                controller.seekTo(controller.duration - 1)
             }, ContextCompat.getMainExecutor(this))
         } else {
             val mediaSessionToken = extras.getParcelable(
                 Notification.EXTRA_MEDIA_SESSION) as MediaSession1.Token? ?: return false
 
             val controller = MediaController1(this, mediaSessionToken)
-            controller.transportControls.skipToNext()
+
+            val duration = controller.metadata?.getLong(MediaMetadata1.METADATA_KEY_DURATION) ?: 0
+            controller.transportControls.seekTo(duration - 1)
         }
 
         return true
