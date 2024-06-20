@@ -12,14 +12,12 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
-import androidx.media3.common.AudioAttributes
 import androidx.media3.common.util.UnstableApi
 import com.google.common.util.concurrent.FutureCallback
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 
-private const val MIN_POSITION = 1000;
-private const val FORWARD_GAP = 200;
+private const val FORWARD_GAP = 100;
 
 class SkipService : NotificationListenerService() {
     private val blacklist = listOf<Long>(6041, 14021, 20021, 30061);
@@ -42,9 +40,9 @@ class SkipService : NotificationListenerService() {
         return subText == "m.youtube.com"
     }
 
-    private fun isAdMetadata(extras: Bundle): Boolean {
-        val title = extras.getString("android.title", "").lowercase()
-        val text = extras.getString("android.text", "").lowercase()
+    private fun isAdMetadata(controller: MediaController): Boolean {
+        val text = controller.mediaMetadata.artist.toString().lowercase()
+        val title = controller.mediaMetadata.title.toString().lowercase()
 
         return title == "video ad" ||
                 text.startsWith("video ad upload channel for") ||
@@ -67,11 +65,12 @@ class SkipService : NotificationListenerService() {
                 val controllerFuture = MediaController.Builder(baseContext, token).buildAsync()
                 controllerFuture.addListener({
                     val controller = controllerFuture.get()
-
                     println(controller.duration)
-                    if (controller.currentPosition < MIN_POSITION) {
-                        if (isAdDuration(controller.duration) || isAdMetadata(extras)) {
+
+                    if (controller.currentPosition < (controller.duration -  FORWARD_GAP)) {
+                        if (isAdDuration(controller.duration) || isAdMetadata(controller)) {
                             println("FAST FORWARDING")
+
                             // fast-forward
                             controller.seekTo(controller.duration - FORWARD_GAP)
                         }
