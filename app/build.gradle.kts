@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.media3.session)
     implementation(libs.kotlinx.coroutines.guava)
+    implementation(libs.androidx.media)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
