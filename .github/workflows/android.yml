@@ -30,6 +30,8 @@ jobs:
 
   version-check:
     runs-on: ubuntu-latest
+    outputs:
+      release-notes: ${{ steps.extract-release-notes.outputs.release_notes }}
     if: startsWith(github.ref, 'refs/tags/')
     steps:
     - name: Checkout repository
@@ -42,6 +44,9 @@ jobs:
           echo "Version $VER does not match the GitHub tag $GITHUB_REF_NAME"
           exit 1
         fi
+    - name: Extract release notes
+      id: extract-release-notes
+      uses: ffurrer2/extract-release-notes@v1
 
   upload:
     runs-on: ubuntu-latest
@@ -52,13 +57,10 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: ch.jsan.crimson
-    - name: Extract release notes
-      id: extract-release-notes
-      uses: ffurrer2/extract-release-notes@v1
     - name: Upload as new release
       uses: softprops/action-gh-release@v1
       with:
-        body: ${{ steps.extract-release-notes.outputs.release_notes }}
+        body: ${{ needs.version-check.outputs.release-notes }}
         prerelease: ${{ contains(github.ref_name, '-') }}
         files: |
           *.apk
