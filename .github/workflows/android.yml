@@ -52,10 +52,13 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: ch.jsan.crimson
-    - run: ls -R
+    - name: Extract release notes
+      id: extract-release-notes
+      uses: ffurrer2/extract-release-notes@v1
     - name: Upload as new release
       uses: softprops/action-gh-release@v1
       with:
+        body: ${{ steps.extract-release-notes.outputs.release_notes }}
         prerelease: ${{ contains(github.ref_name, '-') }}
         files: |
           *.apk
