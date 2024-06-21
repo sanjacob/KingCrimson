@@ -3,6 +3,8 @@
 Instantly fast forward YouTube ads when using the browser
 
 
+![](https://github.com/sanjacob/KingCrimson/assets/52013991/9d88f780-3b92-4b33-8201-f38dbc47d824)
+
 
 ## Why?
 
