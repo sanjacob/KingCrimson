@@ -37,7 +37,7 @@ jobs:
     - name: Check version against tag
       run: |
         VER=$(awk -F'["]' '/versionName =/ {print $2}' app/build.gradle.kts)
-        if [ "$GITHUB_REF_NAME" != "$VER" ]; then
+        if [ "$GITHUB_REF_NAME" != "v$VER" ]; then
           echo "Version $VER does not match the GitHub tag $GITHUB_REF_NAME"
           exit 1
         fi
