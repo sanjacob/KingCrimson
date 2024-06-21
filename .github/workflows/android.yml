@@ -50,9 +50,10 @@ jobs:
     - uses: actions/download-artifact@v4
       with:
         name: ch.jsan.crimson
+    - run: ls -R
     - name: Upload as new release
       uses: softprops/action-gh-release@v1
       with:
         prerelease: ${{ contains(github.ref_name, '-') }}
         files: |
-          ch.jsan.crimson/*.apk
+          *.apk
