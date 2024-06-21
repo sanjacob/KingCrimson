@@ -38,7 +38,7 @@ jobs:
       run: |
         VER=$(awk -F'["]' '/versionName =/ {print $2}' app/build.gradle.kts)
         RELEASE_PATTERN="^v${VER}(-.+)?$"
-        if [[ ! "$GITHUB_REF_NAME" =~ "$RELEASE_PATTERN" ]]; then
+        if [[ ! "$GITHUB_REF_NAME" =~ $RELEASE_PATTERN ]]; then
           echo "Version $VER does not match the GitHub tag $GITHUB_REF_NAME"
           exit 1
         fi
